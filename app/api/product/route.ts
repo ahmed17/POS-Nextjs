@@ -13,7 +13,7 @@ const generateUniqueId = async () => {
   // Loop until a unique ID is generated
   while (!isUnique) {
     customId = `PRD-${uuidv4().slice(0, 8)}`;
-    const existingProduct = await db.productStock.findUnique({
+    const existingProduct = await db.product.findUnique({
       where: { id: customId },
     });
 
@@ -48,18 +48,14 @@ export const POST = async (request: Request) => {
     }
 
     // Create a new product with the generated ID and validated data
-    const newProduct = await db.productStock.create({
+    const newProduct = await db.product.create({
       data: {
         id: customId,
         name: body.productName,
         stock: body.stockProduct,
         price: body.buyPrice,
+        sellprice: body.sellPrice,
         cat: body.category as CatProduct,
-        Product: {
-          create: {
-            sellprice: body.sellPrice,
-          },
-        },
       },
     });
 

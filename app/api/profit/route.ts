@@ -34,11 +34,7 @@ export async function GET(req: NextRequest) {
       include: {
         products: {
           include: {
-            product: {
-              include: {
-                productstock: true,
-              },
-            },
+            product: true,
           },
         },
       },
@@ -77,9 +73,8 @@ export async function GET(req: NextRequest) {
 
       // Process each onSaleProduct in the transaction
       transaction.products.forEach((onSaleProduct) => {
-        const productStock = onSaleProduct.product;
-        const product = onSaleProduct.product.productstock;
-        const sellPrice = productStock.sellprice * onSaleProduct.quantity;
+        const product = onSaleProduct.product;
+        const sellPrice = product.sellprice * onSaleProduct.quantity;
         const buyPrice = product.price * onSaleProduct.quantity;
         const tax = sellPrice * (taxRate / 100); // Calculate tax based on the tax rate
         const sellPriceWithTax = sellPrice + tax;

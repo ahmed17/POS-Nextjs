@@ -1,18 +1,18 @@
-export interface ProductStock {
+export interface Product {
+    id: string;
     name: string;
-    cat: string;
-  }
-  
-  export interface Product {
+    imageProduct?: string | null;
+    price: number;
     sellprice: number;
-    productstock: ProductStock;
-  }
-  
-  export interface TransactionData {
+    stock: number;
+    cat: 'ELECTRO' | 'DRINK' | 'FOOD' | 'FASHION';
+}
+
+export interface TransactionData {
     id: string;
     productId: string;
     quantity: number;
+    saledate: Date;
     transactionId: string;
     product: Product;
-  }
-  
+}

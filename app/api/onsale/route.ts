@@ -13,7 +13,7 @@ export const POST = async (request: Request) => {
     }
 
     // Check stock availability before creating/updating the sale
-    const productStock = await db.productStock.findUnique({
+    const productStock = await db.product.findUnique({
       where: { id: body.productId },
     });
 
@@ -62,7 +62,7 @@ export const POST = async (request: Request) => {
       }
 
       // Reduce the stock atomically
-      await tx.productStock.update({
+      await tx.product.update({
         where: { id: body.productId },
         data: { stock: { decrement: body.qTy } },
       });

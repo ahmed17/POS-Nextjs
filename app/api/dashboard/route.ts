@@ -5,7 +5,7 @@ import { db } from '@/lib/db';
 export async function GET(req: NextRequest) {
   try {
     // Aggregate total stock
-    const totalStock = await db.productStock.aggregate({
+    const totalStock = await db.product.aggregate({
       _sum: {
         stock: true,
       },

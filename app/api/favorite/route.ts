@@ -24,10 +24,7 @@ export async function GET(req: NextRequest) {
       topProducts.map(async (product) => {
         const productDetail = await db.product.findUnique({
           where: {
-            productId: product.productId,
-          },
-          include: {
-            productstock: true,
+            id: product.productId,
           },
         });
         return {

@@ -17,7 +17,7 @@ export const POST = async (request: Request) => {
     }
 
     // Find the specific product
-    const product = await db.productStock.findUnique({
+    const product = await db.product.findUnique({
       where: { id: body.productId },
     });
 
@@ -26,7 +26,7 @@ export const POST = async (request: Request) => {
     }
 
     // Update the specific product's stock
-    const updatedProduct = await db.productStock.update({
+    const updatedProduct = await db.product.update({
       where: { id: body.productId },
       data: { stock: product.stock + body.stock },
     });

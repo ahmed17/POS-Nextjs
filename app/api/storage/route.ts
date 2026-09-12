@@ -4,16 +4,7 @@ import { db } from '@/lib/db';
 // Handler function for GET request to fetch product stocks
 export async function GET() {
   try {
-    // Fetch all product stocks from the database, including the sell price of each product
-    const productStocks = await db.productStock.findMany({
-      include: {
-        Product: {
-          select: {
-            sellprice: true,
-          },
-        },
-      },
-    });
+    const productStocks = await db.product.findMany();
 
     // Return the product stocks in the response
     return NextResponse.json(productStocks, { status: 200 });

@@ -10,7 +10,7 @@ export const PATCH = async (
     const body = await request.json();
 
     // Get the current stock of the product
-    const currentProduct = await db.productStock.findUnique({
+    const currentProduct = await db.product.findUnique({
       where: {
         id: String(params.id),
       },
@@ -27,7 +27,7 @@ export const PATCH = async (
     const newStock = currentProduct.stock + body.stockProduct;
 
     // Update the product's stock
-    const updatedProduct = await db.productStock.update({
+    const updatedProduct = await db.product.update({
       where: {
         id: String(params.id),
       },

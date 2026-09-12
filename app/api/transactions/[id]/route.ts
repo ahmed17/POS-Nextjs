@@ -32,21 +32,15 @@ export async function GET(
         quantity: true,
         product: {
           select: {
+            name: true,
             sellprice: true,
-            productstock: {
-              select: {
-                name: true,
-                cat: true,
-              },
-            },
+            cat: true,
           },
         },
       },
       orderBy: {
         product: {
-          productstock: {
-            name: 'asc',
-          },
+          name: 'asc',
         },
       },
     });
@@ -94,7 +88,7 @@ export const PATCH = async (
       const quantity = quantities[i];
 
       // Find existing stock for the product
-      const existingStock = await db.productStock.findFirst({
+      const existingStock = await db.product.findFirst({
         where: { id: productId },
       });
 
@@ -104,7 +98,7 @@ export const PATCH = async (
       }
 
       // Update stock quantity
-      const updatedStock = await db.productStock.update({
+      const updatedStock = await db.product.update({
         where: { id: productId },
         data: { stock: existingStock.stock - quantity },
       });

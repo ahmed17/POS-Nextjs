@@ -26,35 +26,25 @@ export function fakeUserComplete() {
     role: UserRole.UNKNOW,
   };
 }
-export function fakeProductStock() {
-  return {
-    name: faker.person.fullName(),
-    imageProduct: undefined,
-    price: faker.number.float(),
-    stock: faker.number.float(),
-    cat: faker.helpers.arrayElement([CatProduct.ELECTRO, CatProduct.DRINK, CatProduct.FOOD, CatProduct.FASHION] as const),
-  };
-}
-export function fakeProductStockComplete() {
-  return {
-    id: faker.string.uuid(),
-    name: faker.person.fullName(),
-    imageProduct: undefined,
-    price: faker.number.float(),
-    stock: faker.number.float(),
-    cat: faker.helpers.arrayElement([CatProduct.ELECTRO, CatProduct.DRINK, CatProduct.FOOD, CatProduct.FASHION] as const),
-  };
-}
 export function fakeProduct() {
   return {
+    name: faker.person.fullName(),
+    imageProduct: undefined,
+    price: faker.number.float(),
     sellprice: faker.number.float(),
+    stock: faker.number.float(),
+    cat: faker.helpers.arrayElement([CatProduct.ELECTRO, CatProduct.DRINK, CatProduct.FOOD, CatProduct.FASHION] as const),
   };
 }
 export function fakeProductComplete() {
   return {
     id: faker.string.uuid(),
-    productId: faker.string.uuid(),
+    name: faker.person.fullName(),
+    imageProduct: undefined,
+    price: faker.number.float(),
     sellprice: faker.number.float(),
+    stock: faker.number.float(),
+    cat: faker.helpers.arrayElement([CatProduct.ELECTRO, CatProduct.DRINK, CatProduct.FOOD, CatProduct.FASHION] as const),
   };
 }
 export function fakeOnSaleProduct() {

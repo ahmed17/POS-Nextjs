@@ -11,7 +11,7 @@ export const PATCH = async (
     const body = await request.json();
 
     // Update the product details and related product information
-    const editProduct = await db.productStock.update({
+    const editProduct = await db.product.update({
       where: {
         id: String(params.id),
       },
@@ -19,20 +19,8 @@ export const PATCH = async (
         name: body.productName,
         stock: body.stockProduct,
         price: body.buyPrice,
+        sellprice: body.sellPrice,
         cat: body.category as CatProduct,
-        Product: {
-          update: {
-            where: {
-              productId: String(params.id),
-            },
-            data: {
-              sellprice: body.sellPrice,
-            },
-          },
-        },
-      },
-      include: {
-        Product: true,
       },
     });
 
@@ -51,7 +39,7 @@ export const DELETE = async (
 ) => {
   try {
     // Delete the product with the specified id
-    const product = await db.productStock.delete({
+    const product = await db.product.delete({
       where: {
         id: String(params.id),
       },
