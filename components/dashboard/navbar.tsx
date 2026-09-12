@@ -4,6 +4,8 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { NAVBAR_ITEMS } from '@/constant/navbarMenu';
 import { ScrollAreaDemo } from '../scrollarea/scrollarea';
+import { LogOut } from 'lucide-react';
+import { signOut } from 'next-auth/react';
 
 function Navbar() {
   // Get the current pathname from Next.js router
@@ -32,6 +34,13 @@ function Navbar() {
           ))}
           {/* Include ScrollAreaDemo component */}
           <ScrollAreaDemo />
+          <button
+            onClick={() => signOut({ callbackUrl: '/login' })}
+            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground hover:text-foreground transition-all hover:text-primary mt-auto"
+          >
+            <LogOut className="h-5 w-5" />
+            Logout
+          </button>
         </nav>
       </div>
     </>
