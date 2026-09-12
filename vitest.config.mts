@@ -9,7 +9,7 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./test/setup.ts'],
     alias: {
-      '@': path.resolve(__dirname, './'),
+      '@': path.resolve(import.meta.dirname, './'),
     },
   },
 });
