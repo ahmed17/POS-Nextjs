@@ -128,3 +128,19 @@ Semua perubahan penting pada proyek ini akan didokumentasikan di file ini.
   - Seluruh komponen di dalam `components/order/` (Tabel Transaksi, Form Tambah, Detail Resi)
   - `components/charts/chartthree.tsx`
   - `app/(root)/records/[id]/page.tsx`
+
+---
+
+## [1.2.1] - 2026-09-12 (Auth Fixes)
+
+### 🔐 Security & Authentication
+
+#### Diperbaiki
+- **Middleware Proteksi Global** — Mengubah matcher di `middleware.ts` dari *allow-list* (hanya memproteksi rute tertentu) menjadi *block-list* (memproteksi semua rute secara default, kecuali aset statis dan API auth).
+  - Sekarang akses ke halaman utama (`/`) tanpa login akan langsung dilempar (*redirect*) ke `/login`.
+
+#### Ditambahkan
+- **Tombol Logout** — Menambahkan antarmuka untuk keluar dari sesi pengguna.
+  - Ditambahkan ke komponen Sidebar Desktop (`components/dashboard/navbar.tsx`).
+  - Ditambahkan ke komponen Sidebar Mobile (`components/dashboard/NavbarSheet.tsx`).
+  - Menggunakan fungsi `signOut` dari `next-auth/react` dengan *callback URL* ke `/login`.
