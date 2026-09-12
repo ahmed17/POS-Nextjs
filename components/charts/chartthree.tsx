@@ -26,8 +26,7 @@ type Product = {
 type TopProductResponse = {
   topProducts: {
     id: string;
-    productId: string;
-    productstock: Product;
+    name: string;
     _sum: {
       quantity: number;
     };
@@ -74,7 +73,7 @@ const ChartThree: React.FC = () => {
         );
         // Map the product names to a new array for chart categories
         const newCategories = response.data.topProducts.map(
-          (product) => product.productstock.name
+          (product) => product.name
         );
 
         // Calculate the maximum quantity for the y-axis and add 1

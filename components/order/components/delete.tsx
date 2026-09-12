@@ -25,7 +25,7 @@ interface DialogDeleteProps {
 export function AlertDialogDelete({ data }: DialogDeleteProps) {
   const [dataId, setDataId] = useState(data.id || '');
   const [productName, setProductName] = useState(
-    data.product.productstock.name || ''
+    data.product.name || ''
   );
   const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);

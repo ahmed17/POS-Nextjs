@@ -30,7 +30,7 @@ interface DialogEditProps {
 export function DialogEdit({ data }: DialogEditProps) {
   // State hooks
   const [productName, setProductName] = useState(
-    data.product.productstock.name || ''
+    data.product.name || ''
   );
   const [productId, setProducId] = useState(data.productId || '');
   const [dataId, setDataId] = useState(data.id || '');

@@ -17,10 +17,7 @@ import { ReloadIcon } from '@radix-ui/react-icons';
 import { toast } from 'react-toastify';
 type Data = {
   id: string;
-  productstock: {
-    id: string;
-    name: string;
-  };
+  name: string;
 };
 export function DeleteAlertDialog({
   open,
@@ -50,7 +47,7 @@ export function DeleteAlertDialog({
 
     try {
       const response = await axios.delete(
-        `/api/product/${data.productstock.id}`
+        `/api/product/${data.id}`
       );
       onClose();
       router.refresh();
@@ -72,7 +69,7 @@ export function DeleteAlertDialog({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Are you absolutely sure want to delete {data.productstock.name}?
+            Are you absolutely sure want to delete {data.name}?
           </AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete the data

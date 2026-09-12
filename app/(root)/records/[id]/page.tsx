@@ -171,7 +171,7 @@ export default function DetailPage({ params }: { params: { id: string } }) {
               {transactionData.map((item, index) => (
                 <li key={index} className="flex items-center justify-between">
                   <span className="text-muted-foreground">
-                    {item.product.productstock.name} x{' '}
+                    {item.product.name} x{' '}
                     <span>{item.quantity}</span>
                   </span>
                   <span>

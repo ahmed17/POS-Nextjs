@@ -23,8 +23,8 @@ function TableBodyOrders({ data }: TableBodyProps) {
               {/* Render the product name */}
               <TableCell>
                 <div className="font-medium">
-                  {item.product.productstock.name.charAt(0).toUpperCase() +
-                    item.product.productstock.name.slice(1).toLowerCase()}
+                  {item.product.name.charAt(0).toUpperCase() +
+                    item.product.name.slice(1).toLowerCase()}
                 </div>
                 {/* Render the product ID */}
                 <div className="hidden text-sm text-muted-foreground md:inline">
@@ -33,8 +33,8 @@ function TableBodyOrders({ data }: TableBodyProps) {
               </TableCell>
               {/* Render the product category */}
               <TableCell className="hidden md:table-cell">
-                {item.product.productstock.cat.charAt(0).toUpperCase() +
-                  item.product.productstock.cat.slice(1).toLowerCase()}
+                {item.product.cat.charAt(0).toUpperCase() +
+                  item.product.cat.slice(1).toLowerCase()}
               </TableCell>
               {/* Render the product sell price */}
               <TableCell className="hidden md:table-cell">

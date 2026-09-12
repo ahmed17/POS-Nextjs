@@ -28,14 +28,11 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 type Data = {
   id: string;
+  name: string;
+  cat: CatProduct;
+  stock: number;
+  price: number;
   sellprice: number;
-  productstock: {
-    id: string;
-    name: string;
-    cat: CatProduct;
-    stock: number;
-    price: number;
-  };
 };
 
 export function SheetEdit({
@@ -47,17 +44,17 @@ export function SheetEdit({
   onClose: () => void;
   data: Data;
 }) {
-  const [productName, setProductName] = useState(data.productstock.name || '');
+  const [productName, setProductName] = useState(data.name || '');
   const [categoryProduct, setCategories] = useState<string>(
-    data.productstock.cat ?? ''
+    data.cat ?? ''
   );
   const [sellPrice, setSellPrice] = useState(data.sellprice || '');
-  const [buyPrice, setBuyPrice] = useState(data.productstock.price || '');
+  const [buyPrice, setBuyPrice] = useState(data.price || '');
   const [stockProduct, setStockProduct] = useState(
-    data.productstock.stock || ''
+    data.stock || ''
   );
   const [searchTerm, setSearchTerm] = useState<string>(
-    data.productstock.cat ?? ''
+    data.cat ?? ''
   );
   const [error, setError] = useState<{ [key: string]: string }>({});
 
@@ -75,20 +72,20 @@ export function SheetEdit({
   useEffect(() => {
     if (!open) {
       // Reset input value when sheet is closed
-      setSearchTerm(data.productstock.cat ?? '');
-      setProductName(data.productstock.name || '');
+      setSearchTerm(data.cat ?? '');
+      setProductName(data.name || '');
       setSellPrice(data.sellprice || '');
-      setStockProduct(data.productstock.stock || '');
-      setBuyPrice(data.productstock.price || '');
-      setCategories(data.productstock.cat ?? '');
+      setStockProduct(data.stock || '');
+      setBuyPrice(data.price || '');
+      setCategories(data.cat ?? '');
     }
   }, [
     open,
-    data.productstock.name,
+    data.name,
     data.sellprice,
-    data.productstock.stock,
-    data.productstock.cat,
-    data.productstock.price,
+    data.stock,
+    data.cat,
+    data.price,
   ]);
 
   const handleCancel = () => {
@@ -110,11 +107,11 @@ export function SheetEdit({
 
     // Check if any changes were made
     if (
-      productName === data.productstock.name &&
-      buyPriceNumber === data.productstock.price &&
+      productName === data.name &&
+      buyPriceNumber === data.price &&
       sellPriceNumber === data.sellprice &&
-      stockProductNumber === data.productstock.stock &&
-      categoryProduct === data.productstock.cat
+      stockProductNumber === data.stock &&
+      categoryProduct === data.cat
     ) {
       toast.info('No changes made.');
       setLoading(false);
@@ -132,7 +129,7 @@ export function SheetEdit({
       });
 
       // Send validated data using axios
-      await axios.patch(`/api/product/${data.productstock.id}`, validatedData);
+      await axios.patch(`/api/product/${data.id}`, validatedData);
       onClose();
       router.refresh();
     } catch (error) {

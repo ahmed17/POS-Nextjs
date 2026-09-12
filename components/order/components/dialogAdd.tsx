@@ -28,10 +28,6 @@ import { onsaleSchema } from '@/schema';
 import { z } from 'zod';
 import { toast } from 'react-toastify';
 
-type ProductDetail = {
-  sellprice: number;
-};
-
 type Data = {
   id: string;
   name: string;
@@ -39,7 +35,7 @@ type Data = {
   price: number;
   stock: number;
   cat: string;
-  Product: ProductDetail[];
+  sellprice: number;
 };
 
 export function DialogAdd({
@@ -233,11 +229,7 @@ export function DialogAdd({
                   id="price"
                   className="col-span-3"
                   type="number"
-                  value={
-                    selectedResult.Product && selectedResult.Product.length > 0
-                      ? selectedResult.Product[0].sellprice
-                      : ''
-                  }
+                  value={selectedResult.sellprice || ''}
                   readOnly
                 />
               </div>

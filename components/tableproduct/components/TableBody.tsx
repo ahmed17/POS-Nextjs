@@ -9,14 +9,11 @@ import { useState, useEffect } from 'react';
 // Define the shape of product data
 interface ProductData {
   id: string;
+  name: string;
+  cat: CatProduct;
+  stock: number;
+  price: number;
   sellprice: number;
-  productstock: {
-    id: string;
-    name: string;
-    cat: CatProduct;
-    stock: number;
-    price: number;
-  };
 }
 
 // Define the props for the TableBodyProduct component
@@ -50,24 +47,24 @@ const TableBodyProduct: React.FC<TableBodyProductProps> = ({ data }) => {
             <TableRow key={item.id}>
               {/* Render product name */}
               <TableCell className="font-medium pl-4">
-                {item.productstock.name}
+                {item.name}
               </TableCell>
               {/* Render product category */}
               <TableCell className="pl-4">
                 <Badge variant="outline">
-                  {item.productstock.cat.charAt(0).toUpperCase() +
-                    item.productstock.cat.slice(1).toLowerCase()}
+                  {item.cat.charAt(0).toUpperCase() +
+                    item.cat.slice(1).toLowerCase()}
                 </Badge>
               </TableCell>
               {/* Render product sell price */}
               <TableCell className="pl-5">$ {item.sellprice}</TableCell>
               {/* Render product stock */}
               <TableCell className="hidden md:table-cell pl-6">
-                {item.productstock.stock}
+                {item.stock}
               </TableCell>
               {/* Render product price */}
               <TableCell className="hidden md:table-cell pl-4">
-                $ {item.productstock.price}
+                $ {item.price}
               </TableCell>
               {/* Render dropdown for product actions */}
               <TableCell>

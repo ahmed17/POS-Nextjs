@@ -15,14 +15,11 @@ import { CatProduct } from "@prisma/client";
 
 type Product = {
   id: string;
+  name: string;
+  cat: CatProduct;
+  stock: number;
+  price: number;
   sellprice: number;
-  productstock: {
-    id: string;
-    name: string;
-    cat: CatProduct;
-    stock: number;
-    price: number;
-  };
 };
 
 const Dropdown = ({ product }: { product: Product }) => {

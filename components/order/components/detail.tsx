@@ -200,8 +200,8 @@ export default function Detail({
               {data.map((item, index) => (
                 <li key={index} className="flex items-center justify-between">
                   <span className="text-muted-foreground">
-                    {item.product.productstock.name.charAt(0).toUpperCase() +
-                      item.product.productstock.name
+                    {item.product.name.charAt(0).toUpperCase() +
+                      item.product.name
                         .slice(1)
                         .toLowerCase()}{' '}
                     x <span>{item.quantity}</span>
