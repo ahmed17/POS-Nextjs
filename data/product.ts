@@ -12,30 +12,20 @@ export const fetchProduct = async ({
   try {
     const results = await db.product.findMany({
       where: {
-        productstock: {
-          name: { contains: query, mode: 'insensitive' },
-        },
+        name: { contains: query, mode: 'insensitive' },
       },
       skip,
       take,
       select: {
         id: true,
-        productId: true,
+        name: true,
+        cat: true,
+        stock: true,
+        price: true,
         sellprice: true,
-        productstock: {
-          select: {
-            id: true,
-            name: true,
-            cat: true,
-            stock: true,
-            price: true,
-          },
-        },
       },
       orderBy: {
-        productstock: {
-          name: 'asc',
-        },
+        name: 'asc',
       },
     });
 

@@ -13,21 +13,14 @@ Table User {
   role UserRole [not null, default: 'UNKNOW']
 }
 
-Table ProductStock {
+Table Product {
   id String [pk]
   name String [not null]
   imageProduct String
   price Float [not null]
+  sellprice Float [not null]
   stock Float [not null]
   cat CatProduct [not null]
-  Product Product [not null]
-}
-
-Table Product {
-  id String [pk]
-  productId String [unique, not null]
-  productstock ProductStock [not null]
-  sellprice Float [not null]
   OnSaleProduct OnSaleProduct [not null]
 }
 
@@ -68,8 +61,6 @@ Enum CatProduct {
   FASHION
 }
 
-Ref: Product.productId > ProductStock.id [delete: Cascade]
-
-Ref: OnSaleProduct.productId > Product.productId [delete: Cascade]
+Ref: OnSaleProduct.productId > Product.id [delete: Cascade]
 
 Ref: OnSaleProduct.transactionId > Transaction.id [delete: Cascade]
