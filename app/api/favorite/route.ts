@@ -1,15 +1,12 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-// Instantiate Prisma client
-const prisma = new PrismaClient();
+import { db } from '@/lib/db';
 
 // Handler function for GET requests
 export async function GET(req: NextRequest) {
   try {
     // Get the top 5 products with the highest total quantity sold
-    const topProducts = await prisma.onSaleProduct.groupBy({
+    const topProducts = await db.onSaleProduct.groupBy({
       by: ['productId'],
       _sum: {
         quantity: true,
@@ -25,7 +22,7 @@ export async function GET(req: NextRequest) {
     // Get detailed information for each top product
     const productDetails = await Promise.all(
       topProducts.map(async (product) => {
-        const productDetail = await prisma.product.findUnique({
+        const productDetail = await db.product.findUnique({
           where: {
             productId: product.productId,
           },
@@ -49,8 +46,5 @@ export async function GET(req: NextRequest) {
       { error: 'Internal Server Error' },
       { status: 500 }
     );
-  } finally {
-    // Disconnect the Prisma client after the request is processed
-    await prisma.$disconnect();
   }
 }

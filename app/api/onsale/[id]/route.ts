@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-// Initialize Prisma client
-const prisma = new PrismaClient();
+import { db } from '@/lib/db';
 
 // Handler function for PATCH request
 export const PATCH = async (
@@ -13,7 +10,7 @@ export const PATCH = async (
     const body = await request.json();
 
     // Update the quantity of the order product with the specified id
-    const editedOrderProduct = await prisma.onSaleProduct.update({
+    const editedOrderProduct = await db.onSaleProduct.update({
       where: {
         id: String(params.id),
       },
@@ -24,12 +21,9 @@ export const PATCH = async (
 
     // Return the updated order product in the response
     return NextResponse.json(editedOrderProduct, { status: 201 });
-  } catch (error: any) {
-    // Handle errors
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  } finally {
-    // Disconnect Prisma client
-    await prisma.$disconnect();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 };
 
@@ -40,7 +34,7 @@ export const DELETE = async (
 ) => {
   try {
     // Delete the order product with the specified id
-    const deletedOrderProduct = await prisma.onSaleProduct.delete({
+    const deletedOrderProduct = await db.onSaleProduct.delete({
       where: {
         id: String(params.id),
       },
@@ -48,11 +42,8 @@ export const DELETE = async (
 
     // Return a success message in the response
     return NextResponse.json(deletedOrderProduct, { status: 200 });
-  } catch (error: any) {
-    // Handle errors
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  } finally {
-    // Disconnect Prisma client
-    await prisma.$disconnect();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 };

@@ -1,8 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
-
-// Initialize Prisma client
-const prisma = new PrismaClient();
+import { db } from '@/lib/db';
 
 export const PATCH = async (
   request: Request,
@@ -14,7 +11,7 @@ export const PATCH = async (
 
     // Update the store name if 'storeName' is in the body
     if ('storeName' in body) {
-      const updatedStorename = await prisma.shopData.update({
+      const updatedStorename = await db.shopData.update({
         where: {
           id: String(params.id),
         },
@@ -27,7 +24,7 @@ export const PATCH = async (
 
     // Update the store tax if 'tax' is in the body
     if ('tax' in body) {
-      const updatedStoretax = await prisma.shopData.update({
+      const updatedStoretax = await db.shopData.update({
         where: {
           id: String(params.id),
         },
@@ -43,11 +40,8 @@ export const PATCH = async (
       { error: 'Invalid request body' },
       { status: 400 }
     );
-  } catch (error: any) {
-    // Handle errors
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  } finally {
-    // Disconnect Prisma client
-    await prisma.$disconnect();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 };

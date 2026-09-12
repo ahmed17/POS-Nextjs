@@ -1,9 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-// Instantiate Prisma client
-const prisma = new PrismaClient();
+import { db } from '@/lib/db';
 
 // Handler function for GET requests
 export async function GET(req: NextRequest) {
@@ -27,7 +24,7 @@ export async function GET(req: NextRequest) {
     endDate.setUTCHours(23, 59, 59, 999); // Set end date to the end of the day
 
     // Query transactions within the date range, including related products and product details
-    const transactions = await prisma.transaction.findMany({
+    const transactions = await db.transaction.findMany({
       where: {
         createdAt: {
           gte: new Date(startDate),
@@ -48,7 +45,7 @@ export async function GET(req: NextRequest) {
     });
 
     // Query shop data to get the tax value
-    const shopData = await prisma.shopData.findFirst();
+    const shopData = await db.shopData.findFirst();
     const taxRate = shopData?.tax ?? 0;
 
     // Initialize groupedData with default 0 values for each day in the range
@@ -114,8 +111,5 @@ export async function GET(req: NextRequest) {
       { error: 'Internal Server Error' },
       { status: 500 }
     );
-  } finally {
-    // Disconnect the Prisma client after the request is processed
-    await prisma.$disconnect();
   }
 }

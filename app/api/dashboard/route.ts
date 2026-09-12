@@ -1,35 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-// Initialize Prisma client
-const prisma = new PrismaClient();
+import { db } from '@/lib/db';
 
 // Handler function for GET request
 export async function GET(req: NextRequest) {
   try {
     // Aggregate total stock
-    const totalStock = await prisma.productStock.aggregate({
+    const totalStock = await db.productStock.aggregate({
       _sum: {
         stock: true,
       },
     });
 
     // Aggregate total amount
-    const totalAmount = await prisma.transaction.aggregate({
+    const totalAmount = await db.transaction.aggregate({
       _sum: {
         totalAmount: true,
       },
     });
 
     // Aggregate total quantity
-    const totalQuantity = await prisma.onSaleProduct.aggregate({
+    const totalQuantity = await db.onSaleProduct.aggregate({
       _sum: {
         quantity: true,
       },
     });
-
-    // Disconnect Prisma client
-    await prisma.$disconnect();
 
     // Return aggregated data in the response
     return NextResponse.json(

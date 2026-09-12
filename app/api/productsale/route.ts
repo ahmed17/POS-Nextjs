@@ -1,9 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-// Instantiate Prisma client
-const prisma = new PrismaClient();
+import { db } from '@/lib/db';
 
 // Define type for QuantityByDay
 type QuantityByDay = {
@@ -34,7 +31,7 @@ export async function GET(req: NextRequest) {
     endDate.setUTCHours(23, 59, 59, 999); // Set end date to the end of the day
 
     // Query the database to get total quantity sold within the date range
-    const result = await prisma.onSaleProduct.findMany({
+    const result = await db.onSaleProduct.findMany({
       where: {
         saledate: {
           gte: startDate,
@@ -82,8 +79,5 @@ export async function GET(req: NextRequest) {
       { error: 'Internal Server Error' },
       { status: 500 }
     );
-  } finally {
-    // Disconnect the Prisma client after the request is processed
-    await prisma.$disconnect();
   }
 }

@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { db } from '@/lib/db';
 
 // GET request handler to fetch onSaleProducts by transactionId
 export async function GET(
@@ -12,7 +10,7 @@ export async function GET(
 
   try {
     // Fetch transaction with the given id
-    const transaction = await prisma.transaction.findUnique({
+    const transaction = await db.transaction.findUnique({
       where: { id },
     });
 
@@ -25,7 +23,7 @@ export async function GET(
     }
 
     // Fetch onSaleProducts with detailed product information
-    const onSaleProducts = await prisma.onSaleProduct.findMany({
+    const onSaleProducts = await db.onSaleProduct.findMany({
       where: { transactionId: id },
       select: {
         id: true,
@@ -77,8 +75,6 @@ export const PATCH = async (
   { params }: { params: { id: string } }
 ) => {
   try {
-    const prisma = new PrismaClient();
-
     const body = await request.json();
 
     // Split productId and quantity strings and convert quantities to numbers
@@ -98,7 +94,7 @@ export const PATCH = async (
       const quantity = quantities[i];
 
       // Find existing stock for the product
-      const existingStock = await prisma.productStock.findFirst({
+      const existingStock = await db.productStock.findFirst({
         where: { id: productId },
       });
 
@@ -108,7 +104,7 @@ export const PATCH = async (
       }
 
       // Update stock quantity
-      const updatedStock = await prisma.productStock.update({
+      const updatedStock = await db.productStock.update({
         where: { id: productId },
         data: { stock: existingStock.stock - quantity },
       });
@@ -123,7 +119,7 @@ export const PATCH = async (
     }
 
     // Update transaction with totalAmount and mark as complete
-    const editTransaction = await prisma.transaction.update({
+    const editTransaction = await db.transaction.update({
       where: {
         id: String(params.id),
       },
@@ -133,16 +129,15 @@ export const PATCH = async (
       },
     });
 
-    await prisma.$disconnect();
-
     // Return updated transaction and stocks
     return NextResponse.json(
       { editTransaction, updatedStocks },
       { status: 201 }
     );
-  } catch (error: any) {
-    console.error('Error:', error.message);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Error:', message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 };
 
@@ -153,15 +148,15 @@ export const DELETE = async (
 ) => {
   try {
     // Delete transaction by id
-    const transaction = await prisma.transaction.delete({
+    const transaction = await db.transaction.delete({
       where: {
         id: String(params.id),
       },
     });
 
     return NextResponse.json(transaction, { status: 200 });
-  } catch (error: any) {
-    if (error.code === 'P2025') {
+  } catch (error) {
+    if (error instanceof Error && 'code' in error && (error as any).code === 'P2025') {
       // Prisma error code for data not found
       return NextResponse.json(
         { error: 'Transaction not found' },
@@ -169,8 +164,7 @@ export const DELETE = async (
       );
     }
 
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 };

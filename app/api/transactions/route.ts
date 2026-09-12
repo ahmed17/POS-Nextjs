@@ -1,7 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
-const prisma = new PrismaClient();
+import { db } from '@/lib/db';
 
 // Function to generate a unique transaction ID
 const generateUniqueId = async () => {
@@ -11,7 +10,7 @@ const generateUniqueId = async () => {
   // Loop until a unique ID is generated
   while (!isUnique) {
     customId = `TRS-${uuidv4().slice(0, 8)}`;
-    const existingOrder = await prisma.transaction.findUnique({
+    const existingOrder = await db.transaction.findUnique({
       where: { id: customId },
     });
 
@@ -31,16 +30,15 @@ export const POST = async (request: Request) => {
     const customId = await generateUniqueId();
 
     // Create a new transaction with the unique ID
-    const newOrder = await prisma.transaction.create({
+    const newOrder = await db.transaction.create({
       data: {
         id: customId,
       },
     });
 
     return NextResponse.json(newOrder, { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 };
