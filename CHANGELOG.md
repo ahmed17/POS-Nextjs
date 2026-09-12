@@ -93,6 +93,38 @@ Semua perubahan penting pada proyek ini akan didokumentasikan di file ini.
 ---
 
 ### ⏳ Ditunda (Planned)
-- Penggabungan tabel `ProductStock` + `Product` → terlalu banyak komponen UI terdampak (~20+ file), memerlukan fase refactoring terpisah
 - Setup testing framework (Vitest/Jest)
 - Unit test untuk logika bisnis
+
+---
+
+## [1.2.0] - 2026-09-12 (Phase 2)
+
+### 🏗️ Arsitektur & Database
+
+#### Diubah (Refactoring Besar)
+- **Penggabungan Tabel Produk** — Menyatukan entitas produk yang sebelumnya terpisah antara `ProductStock` dan `Product` menjadi satu model `Product` tunggal di `schema.prisma`. Semua kolom (`name`, `price`, `stock`, `cat`, `sellprice`) sekarang berada di tabel `Product`.
+- **Simplifikasi Relasi Database** — Menyesuaikan relasi `OnSaleProduct` dan `Transaction` agar terhubung langsung dengan `Product`.
+
+### 🔌 API Routes
+
+#### Diperbaiki
+- Memperbarui 8 Endpoint API untuk menggunakan model `Product` baru, yang sebelumnya menggunakan `ProductStock` atau relasi *nested*:
+  - `app/api/onsale/route.ts`
+  - `app/api/restock/[id]/route.ts`
+  - `app/api/dashboard/route.ts`
+  - `app/api/favorite/route.ts`
+  - `app/api/profit/route.ts`
+  - `app/api/productsale/route.ts`
+  - `app/api/storage/route.ts`
+  - `app/api/transactions/[id]/route.ts`
+
+### 🖥️ UI Components & Pages
+
+#### Diperbaiki
+- **Penyesuaian Struktur Data TypeScript** — Mengubah lebih dari 10 komponen antarmuka dan tipe data agar dapat memproses objek `Product` secara langsung (menghapus *nested access* seperti `item.productstock.name` menjadi `item.name`).
+- Komponen yang terdampak dan sudah diperbaiki:
+  - Seluruh komponen di dalam `components/tableproduct/` (Tabel utama, Form Edit, Konfirmasi Hapus)
+  - Seluruh komponen di dalam `components/order/` (Tabel Transaksi, Form Tambah, Detail Resi)
+  - `components/charts/chartthree.tsx`
+  - `app/(root)/records/[id]/page.tsx`
