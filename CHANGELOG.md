@@ -92,12 +92,6 @@ Semua perubahan penting pada proyek ini akan didokumentasikan di file ini.
 
 ---
 
-### ⏳ Ditunda (Planned)
-- Setup testing framework (Vitest/Jest)
-- Unit test untuk logika bisnis
-
----
-
 ## [1.2.0] - 2026-09-12 (Phase 2)
 
 ### 🏗️ Arsitektur & Database
@@ -144,3 +138,20 @@ Semua perubahan penting pada proyek ini akan didokumentasikan di file ini.
   - Ditambahkan ke komponen Sidebar Desktop (`components/dashboard/navbar.tsx`).
   - Ditambahkan ke komponen Sidebar Mobile (`components/dashboard/NavbarSheet.tsx`).
   - Menggunakan fungsi `signOut` dari `next-auth/react` dengan *callback URL* ke `/login`.
+
+---
+
+## [1.3.0] - 2026-09-12 (Phase 3)
+
+### 🧪 Automated Testing & CI/CD
+
+#### Ditambahkan
+- **Framework Pengujian Otomatis** — Setup framework `vitest` bersama dengan `@testing-library/react` dan `jsdom` untuk pengujian berkecepatan tinggi.
+  - `vitest.config.mts` — Konfigurasi environment pengujian.
+  - `test/setup.ts` — Setup global untuk DOM testing.
+- **Database Mocking** — Menerapkan `vitest-mock-extended` untuk melakukan _mocking_ pada `PrismaClient`. Hal ini memungkinkan pengetesan API yang berhubungan dengan database berjalan seketika tanpa mengubah data asli.
+- **Unit & Integration Tests**:
+  - `lib/api-response.test.ts` — Pengujian fungsi utilitas format JSON respons.
+  - `app/api/onsale/route.test.ts` — Pengujian logika transaksi penjualan krusial (validasi stok, perhitungan pengurangan stok atomik, penanganan error).
+- **Continuous Integration (CI)** — Menambahkan workflow GitHub Actions (`.github/workflows/test.yml`).
+  - Menjalankan `npm run test` secara otomatis di *environment* Ubuntu setiap ada *push* atau *pull request* ke *branch* `main`.
